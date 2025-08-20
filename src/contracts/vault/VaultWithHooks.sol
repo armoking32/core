@@ -52,7 +52,7 @@ contract VaultWithHooks is Vault {
         if (withdrawHook_ != address(0)) {
             IHook(withdrawHook_).call(abi.encode(msg.sender, claimer, withdrawnAssets, burnedShares));
         }
-        super._withdraw(claimer, withdrawnAssets, burnedShares);
+        return super._withdraw(claimer, withdrawnAssets, burnedShares);
     }
 
     function _claim(
@@ -60,7 +60,7 @@ contract VaultWithHooks is Vault {
     ) internal returns (uint256 amount) {
         address claimHook_ = claimHook;
         if (claimHook_ != address(0)) {
-            IHook(claimHook_).call(abi.encode(epoch, msg.sender));
+            IHook(claimHook_).call(abi.encode(msg.sender, epoch));
         }
         super._claim(epoch);
     }
